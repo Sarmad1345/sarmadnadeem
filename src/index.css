@@ -1,0 +1,36 @@
+@import "tailwindcss";
+/* 
+* {
+  box-sizing: border-box;
+} */
+
+/* html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  overflow-y: visible;
+  height: 100%;
+} */
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
+  font-family: 'Poppins', 'Inter', sans-serif;
+  background: #000000;
+  position: relative;
+}
+
+/* 
+#root {
+  width: 100%;
+  position: relative;
+  overflow: visible;
+}
+
+#root>div {
+  width: 100%;
+  position: relative;
+  overflow: visible;
+} */
