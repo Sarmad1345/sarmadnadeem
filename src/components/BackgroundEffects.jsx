@@ -1,8 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
+import { throttle } from '../utils/debounce';
 
-const BackgroundEffects = () => {
+const BackgroundEffects = memo(() => {
   const canvasRef = useRef(null);
   const particlesRef = useRef([]);
+  const animationFrameRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -45,29 +47,37 @@ const BackgroundEffects = () => {
         ctx.shadowBlur = 0;
       });
 
-      requestAnimationFrame(animate);
+      animationFrameRef.current = requestAnimationFrame(animate);
     };
 
     animate();
 
-    const handleResize = () => {
+    // Optimized resize handler with throttle
+    const handleResize = throttle(() => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-    };
+    }, 250);
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
+    
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
     <>
       <canvas
         ref={canvasRef}
-        className="fixed inset-0 pointer-events-none z-0 opacity-60"
+        className="fixed inset-0 pointer-events-none z-0 opacity-60 w-full max-w-full h-full"
+        style={{ width: '100vw', maxWidth: '100vw' }}
       />
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden w-full max-w-full">
         {[...Array(5)].map((_, i) => {
-          const randomLeft = Math.random() * 100;
+          const randomLeft = Math.min(Math.random() * 100, 90);
           const randomTop = Math.random() * 100;
           const randomDuration = 15 + Math.random() * 10;
           const randomDelay = Math.random() * 5;
@@ -80,6 +90,8 @@ const BackgroundEffects = () => {
                 top: `${randomTop}%`,
                 animationDuration: `${randomDuration}s`,
                 animationDelay: `${randomDelay}s`,
+                maxWidth: '10vw',
+                overflow: 'hidden',
               }}
             >
               {['const', 'function', 'export', 'import', 'return', 'async', 'await', 'try'][i % 8]}(
@@ -88,7 +100,7 @@ const BackgroundEffects = () => {
         })}
       </div>
       {/* Light beams */}
-      <div className="fixed inset-0 pointer-events-none z-0">
+      <div className="fixed inset-0 pointer-events-none z-0 w-full max-w-full overflow-hidden">
         <div
           className="absolute w-px h-full opacity-20 left-[20%] animate-pulseBeam bg-linear-to-b from-transparent via-indigo-500 to-transparent shadow-[0_0_20px_#6366f1]"
         />
@@ -98,7 +110,9 @@ const BackgroundEffects = () => {
       </div>
     </>
   );
-};
+});
+
+BackgroundEffects.displayName = 'BackgroundEffects';
 
 export default BackgroundEffects;
 

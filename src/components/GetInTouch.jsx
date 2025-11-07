@@ -1,11 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
+import { useFormStore, useAnimationStore } from '../store';
 
 const GetInTouch = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
+  const {
+    contactForm,
+    updateContactField,
+    resetContactForm,
+    isSubmitting,
+    setSubmitting,
+    setSubmitSuccess,
+    setSubmitError,
+  } = useFormStore();
+  const submitSuccess = useFormStore((state) => state.submitSuccess);
+  const submitError = useFormStore((state) => state.submitError);
+  const { setSectionVisibility } = useAnimationStore();
   const [isInView, setIsInView] = useState(false);
   const ref = useRef(null);
 
@@ -14,6 +22,7 @@ const GetInTouch = () => {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true);
+          setSectionVisibility('getInTouch', true);
         }
       },
       { threshold: 0.3, once: true }
@@ -28,23 +37,39 @@ const GetInTouch = () => {
         observer.unobserve(ref.current);
       }
     };
-  }, []);
+  }, [setSectionVisibility]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    setSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      
+      console.log('Form submitted:', contactForm);
+      setSubmitSuccess(true);
+      resetContactForm();
+      
+      // Reset success message after 3 seconds
+      setTimeout(() => {
+        setSubmitSuccess(false);
+      }, 3000);
+    } catch (error) {
+      setSubmitError('Failed to send message. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    updateContactField(e.target.name, e.target.value);
   };
 
   return (
-    <section className="relative z-10 bg-black/80 backdrop-blur-xl border-t border-indigo-500/20 border-b border-indigo-500/20">
-      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-16 md:py-20 lg:py-24">
+    <section id="contact" className="relative z-10 bg-black/80 backdrop-blur-xl border-t border-indigo-500/20 border-b border-indigo-500/20 w-full max-w-full overflow-x-hidden overflow-y-visible">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-16 md:py-20 lg:py-24 w-full">
         <div
           ref={ref}
           className={`grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-20 transition-all duration-1000 ${
@@ -148,43 +173,57 @@ const GetInTouch = () => {
                   <input
                     type="text"
                     name="name"
-                    value={formData.name}
+                    value={contactForm.name}
                     onChange={handleChange}
                     placeholder="Your Name"
                     required
-                    className="w-full px-4 py-3 rounded-lg bg-black/40 border border-indigo-500/30 text-white placeholder-white/40 focus:outline-none focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-500/20 transition"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 rounded-lg bg-black/40 border border-indigo-500/30 text-white placeholder-white/40 focus:outline-none focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-500/20 transition disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 </div>
                 <div>
                   <input
                     type="email"
                     name="email"
-                    value={formData.email}
+                    value={contactForm.email}
                     onChange={handleChange}
                     placeholder="Your Email"
                     required
-                    className="w-full px-4 py-3 rounded-lg bg-black/40 border border-indigo-500/30 text-white placeholder-white/40 focus:outline-none focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-500/20 transition"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 rounded-lg bg-black/40 border border-indigo-500/30 text-white placeholder-white/40 focus:outline-none focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-500/20 transition disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
               <div>
                 <textarea
                   name="message"
-                  value={formData.message}
+                  value={contactForm.message}
                   onChange={handleChange}
                   placeholder="Your Message"
                   rows="6"
                   required
-                  className="w-full px-4 py-3 rounded-lg bg-black/40 border border-indigo-500/30 text-white placeholder-white/40 focus:outline-none focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-500/20 transition resize-none"
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-3 rounded-lg bg-black/40 border border-indigo-500/30 text-white placeholder-white/40 focus:outline-none focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-500/20 transition resize-none disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
+              {submitSuccess && (
+                <div className="p-4 rounded-lg bg-green-500/20 border border-green-500/30 text-green-400 text-center">
+                  Message sent successfully!
+                </div>
+              )}
+              {submitError && (
+                <div className="p-4 rounded-lg bg-red-500/20 border border-red-500/30 text-red-400 text-center">
+                  {submitError}
+                </div>
+              )}
               <button
                 type="submit"
-                className="relative group w-full transition-transform duration-300 hover:scale-105 active:scale-95"
+                disabled={isSubmitting}
+                className="relative group w-full transition-transform duration-300 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 <div className="absolute -inset-0.5 bg-linear-to-r from-yellow-400 to-yellow-300 rounded-lg blur opacity-50 group-hover:opacity-75 transition duration-300"></div>
                 <div className="relative bg-linear-to-r from-yellow-400 to-yellow-300 px-8 py-4 rounded-lg text-black font-semibold text-lg hover:shadow-lg hover:shadow-yellow-400/50 transition-all duration-300 text-center">
-                  Send
+                  {isSubmitting ? 'Sending...' : 'Send'}
                 </div>
               </button>
             </form>

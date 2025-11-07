@@ -1,14 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
+import { useAnimationStore } from '../store';
 
 const Services = () => {
   const ref = useRef(null);
   const [isInView, setIsInView] = useState(false);
+  const { setSectionVisibility, markSectionAnimated } = useAnimationStore();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true);
+          setSectionVisibility('services', true);
+          markSectionAnimated('services');
         }
       },
       { threshold: 0.3, once: true }
@@ -23,11 +27,11 @@ const Services = () => {
         observer.unobserve(ref.current);
       }
     };
-  }, []);
+  }, [setSectionVisibility, markSectionAnimated]);
 
   return (
-    <section className="relative z-10 bg-black py-16 md:py-20 lg:py-24 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
+    <section id="services" className="relative z-10 bg-black py-16 md:py-20 lg:py-24 overflow-x-hidden overflow-y-visible w-full max-w-full">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 w-full">
         <div
           ref={ref}
           className={`transition-all duration-1000 ${

@@ -1,14 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
+import { useAnimationStore } from '../store';
 
 const ClientReviews = () => {
   const ref = useRef(null);
   const [isInView, setIsInView] = useState(false);
+  const { setSectionVisibility, markSectionAnimated } = useAnimationStore();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true);
+          setSectionVisibility('clientReviews', true);
+          markSectionAnimated('clientReviews');
         }
       },
       { threshold: 0.3, once: true }
@@ -23,7 +27,7 @@ const ClientReviews = () => {
         observer.unobserve(ref.current);
       }
     };
-  }, []);
+  }, [setSectionVisibility, markSectionAnimated]);
 
   const reviews = [
     {
@@ -47,12 +51,12 @@ const ClientReviews = () => {
   ];
 
   return (
-    <section className="relative z-10 bg-black/90 backdrop-blur-xl py-16 md:py-20 lg:py-24 overflow-hidden border-t border-indigo-500/20 border-b border-indigo-500/20">
-      <div className="absolute inset-0 opacity-20">
+    <section className="relative z-10 bg-black/90 backdrop-blur-xl py-16 md:py-20 lg:py-24 overflow-x-hidden overflow-y-visible border-t border-indigo-500/20 border-b border-indigo-500/20 w-full max-w-full">
+      <div className="absolute inset-0 opacity-20 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.15)_0%,transparent_50%),radial-gradient(ellipse_at_bottom_right,rgba(139,92,246,0.15)_0%,transparent_50%)]"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 relative">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 relative w-full">
         <div
           ref={ref}
           className={`transition-all duration-1000 ${

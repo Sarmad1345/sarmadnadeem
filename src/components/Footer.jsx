@@ -63,11 +63,11 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative z-10 border-t border-indigo-500/20 bg-black/75 backdrop-blur-2xl mb-0">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[820px] h-[820px] rounded-full blur-[120px] opacity-25 bg-linear-to-r from-indigo-600/50 to-purple-600/50"></div>
+    <footer className="relative z-10 border-t border-indigo-500/20 bg-black/75 backdrop-blur-2xl mb-0 w-full max-w-full overflow-x-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[820px] h-[820px] rounded-full blur-[120px] opacity-25 bg-linear-to-r from-indigo-600/50 to-purple-600/50 max-w-[90vw]"></div>
       </div>
-      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 pt-10 md:pt-12 lg:pt-14 pb-0 relative">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 pt-10 md:pt-12 lg:pt-14 pb-0 relative w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-12 lg:gap-16">
           <div>
             <div className="flex items-center gap-3">
@@ -78,7 +78,9 @@ const Footer = () => {
             </div>
             <div className="mt-8 md:mt-10 space-y-6 md:space-y-7">
               <div className="space-y-2 md:space-y-2.5">
-                <p className="text-white/60 text-sm md:text-base font-medium">Email Address</p>
+                <p className="text-white/60 text-sm md:text-base font-medium">
+                  Email Address
+                </p>
                 <a
                   href="mailto:sarmadnadeem3445@gmail.com"
                   className="text-white text-base md:text-lg font-semibold hover:text-yellow-300 transition block"
@@ -87,7 +89,9 @@ const Footer = () => {
                 </a>
               </div>
               <div className="space-y-2 md:space-y-2.5">
-                <p className="text-white/60 text-sm md:text-base font-medium">Phone Number</p>
+                <p className="text-white/60 text-sm md:text-base font-medium">
+                  Phone Number
+                </p>
                 <a
                   href="tel:03490043739"
                   className="text-white text-base md:text-lg font-semibold hover:text-yellow-300 transition block"
@@ -96,7 +100,9 @@ const Footer = () => {
                 </a>
               </div>
               <div className="space-y-2 md:space-y-2.5">
-                <p className="text-white/60 text-sm md:text-base font-medium">Location</p>
+                <p className="text-white/60 text-sm md:text-base font-medium">
+                  Location
+                </p>
                 <p className="text-white text-base md:text-lg font-semibold">
                   Okara, Punjab, Pakistan
                 </p>
@@ -155,7 +161,10 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-4 md:mt-5 pb-4 md:pb-5 flex flex-col md:flex-row items-center justify-between gap-4 text-white/60 text-xs md:text-sm">
-          <p>© {new Date().getFullYear()} Muhammad Sarmad Nadeem. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} Muhammad Sarmad Nadeem. All rights
+            reserved.
+          </p>
           <div className="flex items-center gap-3 md:gap-4">
             <a href="#" className="hover:text-white transition">
               Privacy
