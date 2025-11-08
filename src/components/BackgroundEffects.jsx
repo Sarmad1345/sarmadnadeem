@@ -1,118 +1,111 @@
-import { useEffect, useRef, memo } from 'react';
-import { throttle } from '../utils/debounce';
+import { memo } from "react";
 
 const BackgroundEffects = memo(() => {
-  const canvasRef = useRef(null);
-  const particlesRef = useRef([]);
-  const animationFrameRef = useRef(null);
+  const generateShiningDots = (count) => {
+    return Array.from({ length: count }, (_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      size: Math.random() * 4 + 2,
+      delay: Math.random() * 3,
+      duration: Math.random() * 2 + 2,
+    }));
+  };
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const particleCount = 30;
-    particlesRef.current = [];
-
-    for (let i = 0; i < particleCount; i++) {
-      particlesRef.current.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 2 + 1,
-        speedX: (Math.random() - 0.5) * 0.5,
-        speedY: (Math.random() - 0.5) * 0.5,
-        opacity: Math.random() * 0.5 + 0.2,
-      });
-    }
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      particlesRef.current.forEach((particle) => {
-        particle.x += particle.speedX;
-        particle.y += particle.speedY;
-
-        if (particle.x < 0 || particle.x > canvas.width) particle.speedX *= -1;
-        if (particle.y < 0 || particle.y > canvas.height) particle.speedY *= -1;
-
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(99, 102, 241, ${particle.opacity})`;
-        ctx.shadowBlur = 6;
-        ctx.shadowColor = '#6366f1';
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      });
-
-      animationFrameRef.current = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    // Optimized resize handler with throttle
-    const handleResize = throttle(() => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }, 250);
-
-    window.addEventListener('resize', handleResize, { passive: true });
-    
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  const shiningDots = generateShiningDots(50);
 
   return (
     <>
-      <canvas
-        ref={canvasRef}
-        className="fixed inset-0 pointer-events-none z-0 opacity-60 w-full max-w-full h-full"
-        style={{ width: '100vw', maxWidth: '100vw' }}
-      />
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden w-full max-w-full">
-        {[...Array(5)].map((_, i) => {
-          const randomLeft = Math.min(Math.random() * 100, 90);
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/15 rounded-full blur-3xl animate-float-orb-1"></div>
+        <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-purple-500/15 rounded-full blur-3xl animate-float-orb-2"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-indigo-400/12 rounded-full blur-3xl animate-float-orb-3"></div>
+        <div className="absolute bottom-0 right-1/3 w-96 h-96 bg-purple-400/12 rounded-full blur-3xl animate-float-orb-4"></div>
+      </div>
+
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden w-full max-w-full">
+        {shiningDots.map((dot) => {
+          const animationDuration = Math.random() * 2 + 3;
+          return (
+            <div
+              key={dot.id}
+              className="absolute rounded-full bg-indigo-400/40 animate-shine-dot-float"
+              style={{
+                left: `${dot.left}%`,
+                top: `${dot.top}%`,
+                width: `${dot.size}px`,
+                height: `${dot.size}px`,
+                boxShadow: `0 0 ${dot.size * 2}px rgba(99, 102, 241, 0.4), 0 0 ${dot.size * 4}px rgba(99, 102, 241, 0.2)`,
+                animationDelay: `${dot.delay}s`,
+                animationDuration: `${animationDuration}s`,
+              }}
+            />
+          );
+        })}
+      </div>
+
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden w-full max-w-full">
+        {[...Array(30)].map((_, i) => {
+          const randomLeft = Math.random() * 100;
           const randomTop = Math.random() * 100;
-          const randomDuration = 15 + Math.random() * 10;
+          const randomSize = Math.random() * 3 + 1;
+          const randomDuration = Math.random() * 15 + 10;
           const randomDelay = Math.random() * 5;
           return (
             <div
               key={i}
-              className="absolute text-xs font-mono text-indigo-400/20 animate-floatCode"
+              className="absolute rounded-full bg-purple-400/30 animate-moving-shine"
               style={{
                 left: `${randomLeft}%`,
                 top: `${randomTop}%`,
+                width: `${randomSize}px`,
+                height: `${randomSize}px`,
+                boxShadow: `0 0 ${randomSize * 2}px rgba(139, 92, 246, 0.3), 0 0 ${randomSize * 4}px rgba(139, 92, 246, 0.15)`,
                 animationDuration: `${randomDuration}s`,
                 animationDelay: `${randomDelay}s`,
-                maxWidth: '10vw',
-                overflow: 'hidden',
               }}
-            >
-              {['const', 'function', 'export', 'import', 'return', 'async', 'await', 'try'][i % 8]}(
-            </div>
+            />
           );
         })}
       </div>
-      {/* Light beams */}
-      <div className="fixed inset-0 pointer-events-none z-0 w-full max-w-full overflow-hidden">
-        <div
-          className="absolute w-px h-full opacity-20 left-[20%] animate-pulseBeam bg-linear-to-b from-transparent via-indigo-500 to-transparent shadow-[0_0_20px_#6366f1]"
-        />
-        <div
-          className="absolute w-px h-full opacity-20 right-[25%] animate-pulseBeam bg-linear-to-b from-transparent via-purple-500 to-transparent shadow-[0_0_20px_#8b5cf6] [animation-duration:4s] [animation-delay:1s]"
-        />
+
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden w-full max-w-full">
+        <div className="absolute top-0 left-1/4 w-px h-full bg-linear-to-b from-transparent via-indigo-500/20 to-transparent animate-light-ray-1"></div>
+        <div className="absolute top-0 right-1/3 w-px h-full bg-linear-to-b from-transparent via-purple-500/20 to-transparent animate-light-ray-2"></div>
+        <div className="absolute top-0 left-1/2 w-px h-full bg-linear-to-b from-transparent via-indigo-400/15 to-transparent animate-light-ray-3"></div>
+      </div>
+
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden w-full max-w-full">
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-indigo-500/8 rounded-full blur-2xl animate-pulse-glow-1"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500/8 rounded-full blur-2xl animate-pulse-glow-2"></div>
+      </div>
+
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden w-full max-w-full">
+        {[...Array(20)].map((_, i) => {
+          const randomLeft = Math.random() * 100;
+          const randomTop = Math.random() * 100;
+          const randomDelay = Math.random() * 4;
+          const randomDuration = Math.random() * 1.5 + 1;
+          return (
+            <div
+              key={i}
+              className="absolute animate-sparkle"
+              style={{
+                left: `${randomLeft}%`,
+                top: `${randomTop}%`,
+                animationDelay: `${randomDelay}s`,
+                animationDuration: `${randomDuration}s`,
+              }}
+            >
+              <div className="w-1 h-1 bg-yellow-300/40 rounded-full shadow-[0_0_4px_rgba(253,224,71,0.3),0_0_8px_rgba(253,224,71,0.15)]"></div>
+            </div>
+          );
+        })}
       </div>
     </>
   );
 });
 
-BackgroundEffects.displayName = 'BackgroundEffects';
+BackgroundEffects.displayName = "BackgroundEffects";
 
 export default BackgroundEffects;
-

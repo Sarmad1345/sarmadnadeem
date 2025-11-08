@@ -1,14 +1,15 @@
-import { lazy, Suspense } from 'react';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import { lazy, Suspense } from "react";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import BackgroundEffects from "./components/BackgroundEffects";
 
 // Lazy load components for code splitting
-const AboutMe = lazy(() => import('./components/AboutMe'));
-const SkillSet = lazy(() => import('./components/SkillSet'));
-const Services = lazy(() => import('./components/Services'));
-const WorkShowcase = lazy(() => import('./components/WorkShowcase'));
-const ClientReviews = lazy(() => import('./components/ClientReviews'));
-const GetInTouch = lazy(() => import('./components/GetInTouch'));
+const AboutMe = lazy(() => import("./components/AboutMe"));
+const SkillSet = lazy(() => import("./components/SkillSet"));
+const Services = lazy(() => import("./components/Services"));
+const WorkShowcase = lazy(() => import("./components/WorkShowcase"));
+const ClientReviews = lazy(() => import("./components/ClientReviews"));
+const GetInTouch = lazy(() => import("./components/GetInTouch"));
 
 // Loading fallback component
 const SectionLoader = () => (
@@ -19,7 +20,8 @@ const SectionLoader = () => (
 
 function App() {
   return (
-    <div className="bg-black m-0 p-0 w-full max-w-full overflow-x-hidden">
+    <div className="bg-black m-0 p-0 w-full max-w-full overflow-x-hidden relative">
+      <BackgroundEffects />
       <Header />
       <Suspense fallback={<SectionLoader />}>
         <AboutMe />
@@ -30,9 +32,9 @@ function App() {
       <Suspense fallback={<SectionLoader />}>
         <Services />
       </Suspense>
-      <Suspense fallback={<SectionLoader />}>
+      {/* <Suspense fallback={<SectionLoader />}>
         <WorkShowcase />
-      </Suspense>
+      </Suspense> */}
       <Suspense fallback={<SectionLoader />}>
         <ClientReviews />
       </Suspense>

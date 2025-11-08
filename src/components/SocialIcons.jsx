@@ -75,7 +75,7 @@ const SocialIcons = ({ className = "", iconSize = "w-5 h-5", variant = "default"
             className="relative group"
           >
             <span className="absolute -inset-2 rounded-lg bg-linear-to-r from-indigo-600 to-purple-600 opacity-0 group-hover:opacity-30 blur transition" />
-            <span className="relative inline-flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-lg border border-indigo-500/30 bg-black/40 text-white/80 hover:text-white hover:shadow-lg hover:shadow-indigo-500/30 transition">
+            <span className="relative inline-flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-lg border border-indigo-500/30 bg-black/40 text-white/80 hover:text-white hover:shadow-lg hover:shadow-indigo-500/30 transition">
               {social.icon}
             </span>
           </a>

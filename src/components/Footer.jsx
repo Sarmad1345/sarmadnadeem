@@ -85,7 +85,7 @@ const Footer = () => {
           <div className="ml-auto">
             <SocialIcons 
               className=""
-              iconSize="w-5 h-5"
+              iconSize="w-6 h-6 md:w-7 md:h-7"
               variant="default"
               boxed={true}
             />
