@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { useAnimationStore } from '../store';
+import { useEffect, useRef, useState } from "react";
+import { useAnimationStore } from "../store";
 
 const Services = () => {
   const ref = useRef(null);
@@ -11,8 +11,8 @@ const Services = () => {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true);
-          setSectionVisibility('services', true);
-          markSectionAnimated('services');
+          setSectionVisibility("services", true);
+          markSectionAnimated("services");
         }
       },
       { threshold: 0.3, once: true }
@@ -30,39 +30,46 @@ const Services = () => {
   }, [setSectionVisibility, markSectionAnimated]);
 
   return (
-    <section id="services" className="relative z-10 bg-black py-16 md:py-20 lg:py-24 overflow-x-hidden overflow-y-visible w-full max-w-full">
+    <section
+      id="services"
+      className="relative z-10 bg-black py-10 md:py-20 lg:py-10 overflow-x-hidden overflow-y-visible w-full max-w-full"
+    >
       <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 w-full">
         <div
           ref={ref}
           className={`transition-all duration-1000 ${
-            isInView ? 'opacity-100' : 'opacity-0'
+            isInView ? "opacity-100" : "opacity-0"
           }`}
         >
           <div
             className={`text-center mb-12 md:mb-16 transition-all duration-600 ${
-              isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
-            style={{ transitionDelay: isInView ? '0.1s' : '0s' }}
+            style={{ transitionDelay: isInView ? "0.1s" : "0s" }}
           >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">
-              SERVICES FIT <span className="relative inline-block">YOUR NEEDS
-                <span className="absolute left-0 bottom-0 h-1 w-full bg-yellow-400 rounded-full transform scale-x-75 origin-left"></span>
-              </span> PERFECTLY
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-5">
+              SERVICES FIT YOUR NEEDS PERFECTLY
             </h2>
-            <p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto">
-              Discover a range of services designed to meet your unique needs. From app development
-              and maintenance to scalability, we've got you covered.
+            <div className="relative flex justify-center md:mb-6">
+              <span className="h-1 w-32 bg-yellow-400 rounded-full transform scale-x-70"></span>
+            </div>
+            <p className="text-lg md:text-2xl text-white/70 max-w-xl mx-auto">
+              Discover a range of services designed to meet your unique needs.
+              From app development and maintenance to scalability, we've got you
+              covered.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             <div
               className={`relative bg-gradient-to-br from-indigo-900/40 to-purple-900/40 backdrop-blur-xl border border-indigo-500/30 p-8 md:p-10 rounded-xl shadow-lg shadow-indigo-500/20 flex flex-col items-center text-center transition-all duration-700 hover:border-indigo-400/50 ${
-                isInView ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+                isInView ? "opacity-100 scale-100" : "opacity-0 scale-90"
               }`}
-              style={{ transitionDelay: isInView ? '0.3s' : '0s' }}
+              style={{ transitionDelay: isInView ? "0.3s" : "0s" }}
             >
-              <span className="absolute top-6 right-6 text-4xl font-bold text-yellow-400">01.</span>
+              <span className="absolute top-6 right-6 text-4xl font-bold text-yellow-400">
+                01.
+              </span>
               <div className="relative w-24 h-24 flex items-center justify-center mb-6 mt-8">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -93,21 +100,24 @@ const Services = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+              <h3 className="text-2xl md:text-1xl font-bold text-white mb-4">
                 Flutter Development
               </h3>
-              <p className="text-base md:text-lg text-white/70 leading-relaxed">
-                Transforming your ideas into seamless mobile experiences through innovative app development with Flutter
+              <p className="text-lg md:text-lg text-white/70 leading-relaxed">
+                Turning your ideas into seamless, high-performance mobile apps
+                with innovative Flutter development.
               </p>
             </div>
 
             <div
               className={`relative bg-gradient-to-br from-indigo-900/40 to-purple-900/40 backdrop-blur-xl border border-indigo-500/30 p-8 md:p-10 rounded-xl shadow-lg shadow-indigo-500/20 flex flex-col items-center text-center transition-all duration-700 hover:border-indigo-400/50 ${
-                isInView ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+                isInView ? "opacity-100 scale-100" : "opacity-0 scale-90"
               }`}
-              style={{ transitionDelay: isInView ? '0.5s' : '0s' }}
+              style={{ transitionDelay: isInView ? "0.5s" : "0s" }}
             >
-              <span className="absolute top-6 right-6 text-4xl font-bold text-yellow-400">02.</span>
+              <span className="absolute top-6 right-6 text-4xl font-bold text-yellow-400">
+                02.
+              </span>
               <div className="relative w-24 h-24 flex items-center justify-center mb-6 mt-8">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -127,11 +137,13 @@ const Services = () => {
                   UI UX
                 </span>
               </div>
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                Flutter UI Development from Figma Design
+              <h3 className="text-[22px] md:text-1xl  font-bold text-white mb-4">
+                Flutter UI Development from Figma Designs
               </h3>
-              <p className="text-base md:text-lg text-white/70 leading-relaxed">
-                Transform your Figma design into a responsive and functional Flutter UI. Clean architecture, optimized performance, and design fidelity guaranteed
+              <p className="text-lg md:text-lg text-white/70 leading-relaxed">
+                Transform your Figma design into a pixel-perfect, responsive
+                Flutter UI with clean architecture, smooth performance, and
+                accurate design built for speed and scalability.
               </p>
             </div>
           </div>
