@@ -65,7 +65,7 @@ const HeroSection = () => {
   return (
     <div
       ref={heroRef}
-      className="relative z-10 flex flex-col md:flex-row items-center justify-between min-h-screen pt-28 md:pt-32 pb-12 md:pb-16 w-full max-w-full overflow-x-hidden"
+      className="relative z-10 flex flex-col md:flex-row items-center justify-between min-h-screen pt-28 md:pt-32 pb-0 w-full max-w-full overflow-x-hidden"
     >
       <div className="mx-auto px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 w-full max-w-full flex flex-col md:flex-row items-center justify-between gap- md:gap-12">
         <div
@@ -142,19 +142,19 @@ const HeroSection = () => {
         </div>
 
         <div
-          className={`flex-1 flex justify-center md:justify-end mt-12 md:mt-0 w-full max-w-full transition-all duration-1000 ${
+          className={`flex-1 flex justify-center md:justify-end mt-12 md:mt-0 w-full max-w-full transition-all duration-1000 mb-0 pb-0 ${
             isInView ? "opacity-100 scale-100" : "opacity-0 scale-90"
           }`}
           style={{ transitionDelay: isInView ? "0.8s" : "0s" }}
         >
-          <div className="relative group w-full max-w-[280px] md:w-72 mx-auto md:mx-10">
+          <div className="relative group w-full max-w-[280px] md:w-72 mx-auto md:mx-10 mb-0 pb-0">
             <div className="absolute -inset-2 md:-inset-4 bg-linear-to-r from-indigo-600 via-purple-600 to-indigo-600 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition duration-500 animate-pulse"></div>
-            <div className="relative bg-black/40 backdrop-blur-xl border border-indigo-500/30 rounded-2xl p-4 shadow-2xl shadow-indigo-500/20 transition-transform duration-300 group-hover:scale-105">
-              <div className="w-full max-w-[280px] md:w-59 h-72 md:h-80 rounded-xl overflow-hidden mx-auto">
+            <div className="relative bg-black/40 backdrop-blur-xl border border-indigo-500/30 rounded-2xl pt-4 px-4 pb-0 shadow-2xl shadow-indigo-500/20 transition-transform duration-300 group-hover:scale-105 mb-0">
+              <div className="w-full max-w-[280px] md:w-59 h-72 md:h-80 rounded-xl overflow-hidden mx-auto mb-0 pb-0">
                 <img
                   src={mineImage}
                   alt="Muhammad Sarmad Nadeem"
-                  className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-110"
+                  className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-110 mb-0 pb-0"
                 />
               </div>
             </div>

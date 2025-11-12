@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import BackgroundEffects from "./components/BackgroundEffects";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Lazy load components for code splitting
 const AboutMe = lazy(() => import("./components/AboutMe"));
@@ -42,6 +43,7 @@ function App() {
         <GetInTouch />
       </Suspense>
       <Footer />
+      <ScrollToTop />
     </div>
   );
 }
