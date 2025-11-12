@@ -7,6 +7,12 @@ const AboutMe = () => {
   const [isInView, setIsInView] = useState(false);
   const { setSectionVisibility, markSectionAnimated } = useAnimationStore();
 
+  const handleContactClick = (e) => {
+    e.preventDefault();
+    // Update hash - the hashchange handler in Navbar will handle scrolling
+    window.location.hash = "contact";
+  };
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -120,6 +126,7 @@ const AboutMe = () => {
             >
               <a
                 href="#contact"
+                onClick={handleContactClick}
                 className="relative group transition-transform duration-300 hover:scale-105 active:scale-95"
               >
                 <div className="absolute -inset-0.5 bg-yellow-400 rounded-lg blur opacity-50 group-hover:opacity-75 transition duration-300"></div>

@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { throttle } from "../utils/debounce";
 import { useUIStore, useNavigationStore } from "../store";
 
 const Navbar = () => {
   const { scrolled, setScrolled } = useUIStore();
   const { navItems, setActiveSection } = useNavigationStore();
+  const isManualNavRef = useRef(false);
 
   useEffect(() => {
     const handleScroll = throttle(() => {
@@ -15,13 +16,64 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [setScrolled]);
 
+  // Handle initial hash on page load and browser back/forward navigation
+  useEffect(() => {
+    const handleHashChange = () => {
+      // Skip if this was triggered by our manual navigation
+      if (isManualNavRef.current) {
+        isManualNavRef.current = false;
+        return;
+      }
+
+      const hash = window.location.hash.slice(1); // Remove the '#' symbol
+      if (hash) {
+        const sectionId = hash === "home" ? "home" : hash;
+        setActiveSection(sectionId);
+        
+        // Small delay to ensure DOM is ready
+        setTimeout(() => {
+          const element = document.getElementById(sectionId);
+          if (element) {
+            const navbarHeight = 80;
+            const elementTop = element.getBoundingClientRect().top + window.pageYOffset;
+            window.scrollTo({
+              top: Math.max(0, elementTop - navbarHeight),
+              behavior: "smooth",
+            });
+          }
+        }, 100);
+      } else {
+        // No hash means we're at home
+        setActiveSection("home");
+      }
+    };
+
+    // Handle initial load
+    handleHashChange();
+
+    // Handle browser back/forward navigation
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, [setActiveSection]);
+
   const handleNavClick = (itemId) => {
     setActiveSection(itemId);
     const sectionId = itemId === "home" ? "home" : itemId;
 
+    // Mark as manual navigation to prevent hashchange handler from interfering
+    isManualNavRef.current = true;
+
+    // Update URL hash - this will trigger hashchange event
     if (sectionId === "home") {
+      // For home, remove hash
+      window.location.hash = "";
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
+      // Update hash - this triggers hashchange, but we've marked it as manual
+      window.location.hash = sectionId;
       const element = document.getElementById(sectionId);
       if (element) {
         const navbarHeight = 80;
