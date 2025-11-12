@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 import { useFormStore, useAnimationStore } from '../store';
 
 const GetInTouch = () => {
@@ -45,19 +46,80 @@ const GetInTouch = () => {
     setSubmitError(null);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      console.log('Form submitted:', contactForm);
+      // Get environment variables
+      const emailjsServiceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const emailjsTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const emailjsPublicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+      const googleScriptUrl = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
+
+      // Validate environment variables
+      if (!emailjsServiceId || !emailjsTemplateId || !emailjsPublicKey || !googleScriptUrl) {
+        throw new Error('Missing environment variables. Please check your .env file.');
+      }
+
+      // Prepare form data
+      const templateParams = {
+        name: contactForm.name,
+        email: contactForm.email,
+        message: contactForm.message,
+      };
+
+      // Send email via EmailJS and save to Google Sheets simultaneously
+      const [emailResult, sheetResult] = await Promise.allSettled([
+        // Send email notification via EmailJS
+        emailjs.send(
+          emailjsServiceId,
+          emailjsTemplateId,
+          templateParams,
+          emailjsPublicKey
+        ),
+        // Save to Google Sheets via Google Apps Script
+        // Using form data format for better compatibility
+        fetch(googleScriptUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: contactForm.name,
+            email: contactForm.email,
+            message: contactForm.message,
+          }),
+        }).catch((error) => {
+          // Silently handle CORS errors (expected with no-cors mode)
+          // The data will still be saved if the request reaches the server
+          console.log('Google Sheets request sent (response not readable due to CORS)');
+          return Promise.resolve();
+        }),
+      ]);
+
+      // Check results
+      // EmailJS is critical - if it fails, show error
+      if (emailResult.status === 'rejected') {
+        console.error('EmailJS error:', emailResult.reason);
+        throw new Error('Failed to send email notification. Please try again.');
+      }
+
+      // Google Sheets is nice to have - log if it fails but don't block success
+      if (sheetResult.status === 'rejected') {
+        console.warn('Google Sheets save failed:', sheetResult.reason);
+        // Still show success since email was sent
+      }
+
+      // Show success message
       setSubmitSuccess(true);
       resetContactForm();
-      
-      // Reset success message after 3 seconds
+
+      // Reset success message after 5 seconds
       setTimeout(() => {
         setSubmitSuccess(false);
-      }, 3000);
+      }, 5000);
     } catch (error) {
-      setSubmitError('Failed to send message. Please try again.');
+      console.error('Form submission error:', error);
+      setSubmitError(
+        error.message || 'Failed to send message. Please try again.'
+      );
     } finally {
       setSubmitting(false);
     }
