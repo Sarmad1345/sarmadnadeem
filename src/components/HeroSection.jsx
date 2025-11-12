@@ -65,7 +65,7 @@ const HeroSection = () => {
   return (
     <div
       ref={heroRef}
-      className="relative z-10 flex flex-col md:flex-row items-center justify-between min-h-screen pt-28 md:pt-32 pb-0 w-full max-w-full overflow-x-hidden"
+      className="relative z-10 flex flex-col md:flex-row items-center justify-between min-h-screen pt-0 md:pt-16 pb-0 w-full max-w-full overflow-x-hidden"
     >
       <div className="mx-auto px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 w-full max-w-full flex flex-col md:flex-row items-center justify-between gap- md:gap-12">
         <div
@@ -142,7 +142,7 @@ const HeroSection = () => {
         </div>
 
         <div
-          className={`flex-1 flex justify-center md:justify-end mt-12 md:mt-0 w-full max-w-full transition-all duration-1000 mb-0 pb-0 ${
+          className={`flex-1 flex justify-center md:justify-end mt-6 md:mt-0 w-full max-w-full transition-all duration-1000 mb-0 pb-0 ${
             isInView ? "opacity-100 scale-100" : "opacity-0 scale-90"
           }`}
           style={{ transitionDelay: isInView ? "0.8s" : "0s" }}

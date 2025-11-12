@@ -6,19 +6,18 @@ const ScrollToTop = () => {
 
   useEffect(() => {
     const handleScroll = throttle(() => {
-      // Get the home section element
-      const homeSection = document.getElementById("home");
-      if (homeSection) {
-        const homeSectionBottom = homeSection.offsetTop + homeSection.offsetHeight;
-        const scrollPosition = window.scrollY + window.innerHeight;
+      // Get the about section element
+      const aboutSection = document.getElementById("about");
+      if (aboutSection) {
+        // Show button when user has scrolled to or past the about section
+        // Check if the top of about section is visible or above the viewport
+        const aboutSectionTop = aboutSection.offsetTop;
+        const scrollPosition = window.scrollY + window.innerHeight / 2; // Middle of viewport
         
-        // Show button when user has scrolled past the home section
-        // We check if scroll position is past 80% of home section
-        const threshold = homeSection.offsetTop + (homeSection.offsetHeight * 0.8);
-        setIsVisible(window.scrollY > threshold);
+        setIsVisible(scrollPosition >= aboutSectionTop);
       } else {
-        // Fallback: show after scrolling 500px
-        setIsVisible(window.scrollY > 500);
+        // Fallback: show after scrolling 800px (approximately after home section)
+        setIsVisible(window.scrollY > 800);
       }
     }, 100);
 

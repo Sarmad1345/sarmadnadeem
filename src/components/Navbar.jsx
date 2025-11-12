@@ -33,11 +33,17 @@ const Navbar = () => {
         // Small delay to ensure DOM is ready
         setTimeout(() => {
           const element = document.getElementById(sectionId);
-          if (element) {
-            const navbarHeight = 80;
-            const elementTop = element.getBoundingClientRect().top + window.pageYOffset;
+          const navbar = document.querySelector('nav');
+          if (element && navbar) {
+            // Get actual navbar height dynamically
+            const navbarHeight = navbar.offsetHeight || 80;
+            // Calculate scroll position - adjust offset to move section up
+            const elementTop = element.offsetTop;
+            // Increase offset to move section higher up
+            const scrollPosition = elementTop - navbarHeight + 50;
+            
             window.scrollTo({
-              top: Math.max(0, elementTop - navbarHeight),
+              top: Math.max(0, scrollPosition),
               behavior: "smooth",
             });
           }
@@ -74,15 +80,24 @@ const Navbar = () => {
     } else {
       // Update hash - this triggers hashchange, but we've marked it as manual
       window.location.hash = sectionId;
-      const element = document.getElementById(sectionId);
-      if (element) {
-        const navbarHeight = 80;
-        const elementTop = element.getBoundingClientRect().top + window.pageYOffset;
-        window.scrollTo({
-          top: Math.max(0, elementTop - navbarHeight),
-          behavior: "smooth",
-        });
-      }
+      // Small delay to ensure hash is updated
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        const navbar = document.querySelector('nav');
+        if (element && navbar) {
+          // Get actual navbar height dynamically
+          const navbarHeight = navbar.offsetHeight || 80;
+          // Calculate scroll position - adjust offset to move section up
+          const elementTop = element.offsetTop;
+          // Increase offset to move section higher up
+          const scrollPosition = elementTop - navbarHeight + 50;
+          
+          window.scrollTo({
+            top: Math.max(0, scrollPosition),
+            behavior: "smooth",
+          });
+        }
+      }, 10);
     }
   };
 

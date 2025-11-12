@@ -137,7 +137,8 @@ const AboutMe = () => {
 
               <a
                 href={cvPDF}
-                download="Muhammad_Sarmad_Nadeem_CV.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="relative group transition-transform duration-300 hover:scale-105 active:scale-95"
               >
                 <div className="absolute -inset-0.5 bg-linear-to-r from-indigo-600 to-purple-600 rounded-lg blur opacity-50 group-hover:opacity-75 transition duration-300"></div>
