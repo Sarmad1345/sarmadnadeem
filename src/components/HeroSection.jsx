@@ -67,7 +67,7 @@ const HeroSection = () => {
       ref={heroRef}
       className="relative z-10 flex flex-col md:flex-row items-center justify-between min-h-screen pt-0 md:pt-16 pb-0 w-full max-w-full overflow-x-hidden"
     >
-      <div className="mx-auto px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 w-full max-w-full flex flex-col md:flex-row items-center justify-between gap- md:gap-12">
+      <div className="mx-auto px-6 md:px-9 lg:px-13 xl:px-16 2xl:px-20 w-full max-w-full flex flex-col md:flex-row items-center justify-between gap- md:gap-12">
         <div
           className={`flex-1/3 max-w-2xl space-y-5 md:space-y-6 w-full transition-all duration-1000 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
